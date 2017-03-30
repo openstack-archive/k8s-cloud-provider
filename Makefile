@@ -32,7 +32,7 @@ unit: depend
 	cd $(DEST) && go test -tags=unit $(shell glide novendor)
 
 functional:
-	@echo "$@ not yet implemented"
+	tools/run-e2e.sh
 
 fmt: work
 	cd $(DEST) && CGO_ENABLED=0 go fmt ./...
