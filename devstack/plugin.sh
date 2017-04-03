@@ -73,7 +73,8 @@ function install_k8s_cloud_provider {
     # Run the script that builds kubernetes from source and starts the processes
     pushd ${K8S_SRC} >/dev/null
     hack/install-etcd.sh
-    run_process kubernetes "sudo -E hack/local-up-cluster.sh"
+    export PATH=${K8S_SRC}/third_party/etcd:${PATH}
+    run_process kubernetes "sudo -E PATH=$PATH hack/local-up-cluster.sh"
     popd >/dev/null
 }
 
