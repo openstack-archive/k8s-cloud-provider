@@ -16,3 +16,5 @@
 
 cd $BASE/new/devstack
 source openrc admin admin
+
+echo "In post_test_hook"
