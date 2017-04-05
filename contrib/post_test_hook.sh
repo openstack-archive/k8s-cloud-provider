@@ -26,6 +26,22 @@ TESTS_TO_SKIP=(
     '\[HPA\]'
     'Dashboard'
     'Services.*functioning.*NodePort'
+    'DNS \[It\] should provide DNS for ExternalName services'
+    'DNS \[It\] should provide DNS for pods for Hostname and Subdomain Annotation'
+    'DNS \[It\] should provide DNS for services'
+    'DNS \[It\] should provide DNS for the cluster'
+    'Kubectl client \[k8s.io\] Guestbook application \[It\] should create and stop a working application'
+    'Kubectl client \[k8s.io\] Simple pod \[It\] should handle in\-cluster config'
+    'Kubectl client \[k8s.io\] Simple pod \[It\] should support exec through an HTTP proxy'
+    'PreStop \[It\] should call prestop when killing a pod'
+    'Projected \[It\] should update labels on modification'
+    'Services \[It\] should create endpoints for unready pods'
+    'Services \[It\] should serve a basic endpoint from pods'
+    '\[StatefulSetBasic\] \[It\] should adopt matching orphans and release non\-matching pods'
+    '\[StatefulSetBasic\] \[It\] should allow template updates'
+    '\[StatefulSetBasic\] \[I\t] should not deadlock when a pod.s predecessor fails'
+    '\[StatefulSetBasic\] \[It\] should provide basic identity'
+    'Volumes \[Volume\] \[k8s.io\] NFS \[It\] should be mountable'
 )
 
 function skipped_test_names () {
