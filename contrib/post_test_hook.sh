@@ -25,7 +25,22 @@ TESTS_TO_SKIP=(
     '\[Feature:.+\]'
     '\[HPA\]'
     'Dashboard'
-    'Services.*functioning.*NodePort'
+    'NFS.*should.*be.*mountable'
+    'provide.*basic.*identity'
+    'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
+    'should.*allow.*template.*updates'
+    'should.*call.*prestop.*when.*killing.*a.*pod'
+    'should.*create.*and.*stop.*a.*working.*application'
+    'should.*create.*endpoints.*for.*unready.*pods'
+    'should.*handle.*in.*cluster.*config'
+    'should.*not.*deadlock.*when.*a.*pod.s.*predecessor.*fails'
+    'should.*provide.*DNS.*for.*ExternalName.*services'
+    'should.*provide.*DNS.*for.*pods.*for.*Hostname.*and.*Subdomain.*Annotation'
+    'should.*provide.*DNS.*for.*services'
+    'should.*provide.*DNS.*for.*the.*cluster'
+    'should.*serve.*a.*basic.*endpoint.*from.*pods'
+    'should.*support.*exec.*through.*an.*HTTP.*proxy'
+    'should.*update.*labels.*on.*modification'
 )
 
 function skipped_test_names () {
