@@ -14,6 +14,8 @@
 
 # This script is executed inside post_test_hook function in devstack gate.
 
+set -eux
+
 BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
