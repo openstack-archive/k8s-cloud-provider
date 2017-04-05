@@ -24,23 +24,6 @@ TESTS_TO_SKIP=(
     '\[Flaky\]'
     '\[Feature:.+\]'
     '\[HPA\]'
-    'Dashboard'
-    'NFS.*should.*be.*mountable'
-    'provide.*basic.*identity'
-    'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
-    'should.*allow.*template.*updates'
-    'should.*call.*prestop.*when.*killing.*a.*pod'
-    'should.*create.*and.*stop.*a.*working.*application'
-    'should.*create.*endpoints.*for.*unready.*pods'
-    'should.*handle.*in.*cluster.*config'
-    'should.*not.*deadlock.*when.*a.*pod.s.*predecessor.*fails'
-    'should.*provide.*DNS.*for.*ExternalName.*services'
-    'should.*provide.*DNS.*for.*pods.*for.*Hostname.*and.*Subdomain.*Annotation'
-    'should.*provide.*DNS.*for.*services'
-    'should.*provide.*DNS.*for.*the.*cluster'
-    'should.*serve.*a.*basic.*endpoint.*from.*pods'
-    'should.*support.*exec.*through.*an.*HTTP.*proxy'
-    'should.*update.*labels.*on.*modification'
 )
 
 function skipped_test_names () {
@@ -128,5 +111,5 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 source $DEST/.gimme/envs/go1.7.5.env
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(skipped_test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.noColor --ginkgo.trace=true --ginkgo.skip=$(skipped_test_names)"
 popd >/dev/null
