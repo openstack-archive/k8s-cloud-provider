@@ -17,14 +17,7 @@
 BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
-TESTS_TO_SKIP=(
-    '\[Slow\]'
-    '\[Serial\]'
-    '\[Disruptive\]'
-    '\[Flaky\]'
-    '\[Feature:.+\]'
-    '\[HPA\]'
-    'Dashboard'
+TESTS_TO_RUN=(
     'NFS.*should.*be.*mountable'
     'provide.*basic.*identity'
     'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
@@ -43,9 +36,9 @@ TESTS_TO_SKIP=(
     'should.*update.*labels.*on.*modification'
 )
 
-function skipped_test_names () {
+function run_test_names () {
     local first=y
-    for name in "${TESTS_TO_SKIP[@]}"; do
+    for name in "${TESTS_TO_RUN[@]}"; do
         if [ -z "${first}" ]; then
             echo -n "|"
         else
@@ -128,5 +121,5 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 source $DEST/.gimme/envs/go1.7.5.env
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(skipped_test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.focus=$(run_test_names)"
 popd >/dev/null
