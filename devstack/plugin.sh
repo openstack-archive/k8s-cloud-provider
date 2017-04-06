@@ -99,6 +99,8 @@ function install_k8s_cloud_provider {
     export ALLOW_SECURITY_CONTEXT=true
     export ALLOW_ANY_TOKEN=true
     export ENABLE_HOSTPATH_PROVISIONER=true
+    export SERVICE_CLUSTER_IP_RANGE=10.1.0.0/24
+    export FIRST_SERVICE_CLUSTER_IP=10.1.0.1
 
     run_process kubernetes "sudo -E PATH=$PATH hack/local-up-cluster.sh"
     popd >/dev/null
