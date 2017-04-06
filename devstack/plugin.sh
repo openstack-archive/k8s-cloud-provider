@@ -1,20 +1,8 @@
 #!/bin/bash
 #
-# lib/dlm
-#
 # Functions to control the installation and configuration of kubernetes with the
 # external OpenStack cloud provider enabled.
-
-# Dependencies:
 #
-# - ``functions`` file
-
-# ``stack.sh`` calls the entry points in this order:
-#
-# - install_k8s_cloud_provider
-# - configure_k8s_cloud_provider
-# - cleanup_dlm
-
 # Save trace setting
 _XTRACE_K8S_PROVIDER=$(set +o | grep xtrace)
 set -o xtrace
