@@ -18,12 +18,6 @@ BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
 TESTS_LIST=(
-    '\[Slow\]'
-    '\[Serial\]'
-    '\[Disruptive\]'
-    '\[Flaky\]'
-    '\[Feature:.+\]'
-    '\[HPA\]'
     'Basic.*StatefulSet.*functionality.*should.*allow.*template.*updates'
     'Dashboard'
     'Granular.*Checks.*Pods.*should.*function.*for.*node\-pod.*communication:.*udp'
@@ -140,5 +134,5 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 source $DEST/.gimme/envs/go1.7.5.env
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.focus=$(test_names)"
 popd >/dev/null
