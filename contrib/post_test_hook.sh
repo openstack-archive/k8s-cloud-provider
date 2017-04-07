@@ -17,41 +17,112 @@
 BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
-TESTS_TO_SKIP=(
+TESTS_LIST_REGEX=(
     '\[Slow\]'
     '\[Serial\]'
     '\[Disruptive\]'
     '\[Flaky\]'
     '\[Feature:.+\]'
     '\[HPA\]'
-    'Dashboard'
-    'NFS.*should.*be.*mountable'
-    'provide.*basic.*identity'
-    'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
-    'should.*allow.*template.*updates'
-    'should.*call.*prestop.*when.*killing.*a.*pod'
-    'should.*create.*and.*stop.*a.*working.*application'
-    'should.*create.*endpoints.*for.*unready.*pods'
-    'should.*handle.*in.*cluster.*config'
-    'should.*not.*deadlock.*when.*a.*pod.s.*predecessor.*fails'
-    'should.*provide.*DNS.*for.*ExternalName.*services'
-    'should.*provide.*DNS.*for.*pods.*for.*Hostname.*and.*Subdomain.*Annotation'
-    'should.*provide.*DNS.*for.*services'
-    'should.*provide.*DNS.*for.*the.*cluster'
-    'should.*serve.*a.*basic.*endpoint.*from.*pods'
-    'should.*support.*exec.*through.*an.*HTTP.*proxy'
-    'should.*update.*labels.*on.*modification'
 )
 
-function skipped_test_names () {
+TESTS_LIST=(
+    'Basic StatefulSet functionality [StatefulSetBasic] should allow template updates'
+    'Basic StatefulSet functionality [StatefulSetBasic] should provide basic identity'
+    'ConfigMap [AfterEach] updates should be reflected in volume [Conformance] [Volume]'
+    'ConfigMap should be consumable from pods in volume with mappings [Conformance] [Volume]'
+    'ConfigMap should be consumable from pods in volume with mappings and Item mode set[Conformance] [Volume]'
+    'ConfigMap should be consumable from pods in volume with mappings as non-root [Conformance] [Volume]'
+    'ConfigMap should be consumable in multiple volumes in the same pod [Conformance] [Volume]'
+    'DNS should provide DNS for ExternalName services'
+    'DNS should provide DNS for pods for Hostname and Subdomain Annotation'
+    'DNS should provide DNS for services [Conformance]'
+    'DNS should provide DNS for the cluster [Conformance]'
+    'Deployment RecreateDeployment should delete old pods and create new ones'
+    'Deployment [AfterEach] deployment should support rollover'
+    'Deployment [It] deployment should support rollover'
+    'Deployment paused deployment should be ignored by the controller'
+    'DisruptionController [It] evictions: enough pods, absolute => should allow an eviction'
+    'DisruptionController [It] evictions: enough pods, replicaSet, percentage => should allow an eviction'
+    'DisruptionController evictions: too few pods, absolute => should not allow an eviction'
+    'Downward API volume [AfterEach] should set DefaultMode on files [Conformance] [Volume]'
+    'Downward API volume should provide container.*s cpu limit [Conformance] [Volume]'
+    'Downward API volume should set mode on item file [Conformance] [Volume]'
+    'Downward API volume should update labels on modification [Conformance] [Volume]'
+    'EmptyDir volumes should support (non-root,0666,default) [Conformance] [Volume]'
+    'EmptyDir volumes should support (root,0666,default) [Conformance] [Volume]'
+    'Garbage collector [It] should orphan pods created by rc if deleteOptions.OrphanDependents is nil'
+    'Granular Checks: Pods should function for node-pod communication: udp [Conformance]'
+    'Guestbook application should create and stop a working application [Conformance]'
+    'HostPath [AfterEach] should support subPath [Volume]'
+    'InitContainer should not start app containers if init containers fail on a RestartAlways pod'
+    'Kubectl client [AfterEach] [k8s.io] Kubectl run rc should create an rc from an image [Conformance]'
+    'Kubectl client [k8s.io] Kubectl label [BeforeEach] should update the label on a resource [Conformance]'
+    'Kubectl client [k8s.io] Simple pod [It] should return command exit codes'
+    'Kubectl client [k8s.io] Simple pod should handle in-cluster config'
+    'Kubectl client [k8s.io] Simple pod should support exec through an HTTP proxy'
+    'Kubernetes Dashboard should check that the kubernetes-dashboard instance is alive'
+    'LimitRange [AfterEach] should create a LimitRange with defaults and ensure pod has those defaults applied.'
+    'NFS should be mountable'
+    'NFSv3 should be mountable for NFSv3 [Volume]'
+    'NFSv4 should be mountable for NFSv4 [Volume]'
+    'Pods Extended [AfterEach] [k8s.io] Pods Set QOS Class should be submitted and removed [Conformance]'
+    'Pods [AfterEach] should support retrieving logs from the container over websockets'
+    'Pods should support remote command execution over websockets'
+    'Port forwarding [k8s.io] With a server listening on 0.0.0.0 [k8s.io] that expects a client request [It] should support a client that connects, sends data, and disconnects'
+    'Port forwarding [k8s.io] With a server listening on 0.0.0.0 [k8s.io] that expects no client request should support a client that connects, sends data, and disconnects'
+    'Port forwarding [k8s.io] With a server listening on localhost [k8s.io] that expects a client request [It] should support a client that connects, sends data, and disconnects [Conformance]'
+    'Port forwarding [k8s.io] With a server listening on localhost [k8s.io] that expects no client request should support a client that connects, sends data, and disconnects [Conformance]'
+    'PreStop should call prestop when killing a pod [Conformance]'
+    'PrivilegedPod should enable privileged commands'
+    'Probing container should be restarted with a /healthz http liveness probe [Conformance]'
+    'Projected [AfterEach] should be consumable in multiple volumes in the same pod [Conformance] [Volume]'
+    'Projected [It] updates should be reflected in volume [Conformance] [Volume]'
+    'Projected should be consumable from pods in volume with mappings [Conformance] [Volume]'
+    'Projected should be consumable from pods in volume with mappings and Item Mode set [Conformance] [Volume]'
+    'Projected should be consumable from pods in volume with mappings and Item mode set[Conformance] [Volume]'
+    'Projected should be consumable from pods in volume with mappings as non-root [Conformance] [Volume]'
+    'Projected should provide container.*s cpu limit [Conformance] [Volume]'
+    'Projected should set DefaultMode on files [Conformance] [Volume]'
+    'Projected should set mode on item file [Conformance] [Volume]'
+    'Projected should update labels on modification [Conformance] [Volume]'
+    'Proxy version v1 [AfterEach] should proxy logs on node with explicit kubelet port [Conformance]'
+    'ReplicaSet should serve a basic image on each replica with a public image [Conformance]'
+    'ReplicationController [It] should serve a basic image on each replica with a public image [Conformance]'
+    'ResourceQuota [AfterEach] should create a ResourceQuota and ensure its status is promptly calculated.'
+    'ResourceQuota [It] should create a ResourceQuota and capture the life of a configMap.'
+    'ResourceQuota should create a ResourceQuota and capture the life of a secret.'
+    'Secrets optional updates should be reflected in volume [Conformance] [Volume]'
+    'Secrets should be consumable from pods in volume with mappings [Conformance] [Volume]'
+    'Secrets should be consumable from pods in volume with mappings and Item Mode set [Conformance] [Volume]'
+    'Services [It] should be able to create a functioning NodePort service'
+    'Services should create endpoints for unready pods'
+    'Services should serve a basic endpoint from pods [Conformance]'
+    'StatefulSet [k8s.io] Basic StatefulSet functionality [StatefulSetBasic] should adopt matching orphans and release non-matching pods'
+    'StatefulSet [k8s.io] Basic StatefulSet functionality [StatefulSetBasic] should not deadlock when a pod.*s predecessor fails'
+)
+
+function escape_test_name() {
+    sed 's/\[[^]]*\]//g' <<< "$1" | sed "s/[^[:alnum:]]/ /g" | tr -s " " | sed "s/^\s\+//" | sed "s/\s/.*/g"
+}
+
+function test_names () {
     local first=y
-    for name in "${TESTS_TO_SKIP[@]}"; do
+    for name in "${TESTS_LIST_REGEX[@]}"; do
         if [ -z "${first}" ]; then
             echo -n "|"
         else
             first=
         fi
         echo -n "${name}"
+    done
+    for name in "${TESTS_LIST[@]}"; do
+        if [ -z "${first}" ]; then
+            echo -n "|"
+        else
+            first=
+        fi
+        echo -n "$(escape_test_name "${name}")"
     done
 }
 
@@ -128,5 +199,5 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 source $DEST/.gimme/envs/go1.7.5.env
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(skipped_test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --ginkgo.v --ginkgo.skip=$(test_names)"
 popd >/dev/null
