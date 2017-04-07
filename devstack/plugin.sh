@@ -74,6 +74,8 @@ function install_k8s_cloud_provider {
     mkdir -p ${GOPATH}/src/k8s.io/
     if [ ! -d "${K8S_SRC}" ]; then
         git clone https://${CONFORMANCE_REPO} ${K8S_SRC}
+        git remote update
+        git checkout tags/v1.7.0-alpha.1 -b branch-v1.7.0-alpha.1
     fi
     go get -u github.com/jteeuwen/go-bindata/go-bindata || true
     go get -u github.com/cloudflare/cfssl/cmd/... || true
