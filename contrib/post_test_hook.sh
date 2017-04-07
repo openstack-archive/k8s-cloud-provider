@@ -17,62 +17,84 @@
 BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
-TESTS_LIST=(
+TESTS_LIST_REGEX=(
     '\[Slow\]'
     '\[Serial\]'
     '\[Disruptive\]'
     '\[Flaky\]'
     '\[Feature:.+\]'
     '\[HPA\]'
-    'Basic.*StatefulSet.*functionality.*should.*allow.*template.*updates'
-    'Dashboard'
-    'Granular.*Checks.*Pods.*should.*function.*for.*node\-pod.*communication:.*udp'
-    'Guestbook.*application.*should.*create.*and.*stop.*a.*working.*application'
-    'NFS.*should.*be.*mountable'
-    'RecreateDeployment.*should.*delete.*old.*pods.*and.*create.*new.*ones'
-    'Simple.*pod.*should.*handle.*in\-cluster.*config'
-    'Simple.*pod.*should.*support.*exec.*through.*an.*HTTP.*proxy'
-    'With.*a.*server.*listening.*on.*localhost.*that.*expects.*no.*client.*request.*should.*support.*a.*client.*that.*connects.*sends.*data.*and.*disconnects'
-    'evictions:.*too.*few.*pods,.*absolute.*should.*not.*allow.*an.*eviction'
-    'optional.*updates.*should.*be.*reflected.*in.*volume'
-    'paused.*deployment.*should.*be.*ignored.*by.*the.*controller'
-    'provide.*basic.*identity'
-    'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
-    'should.*allow.*template.*updates'
-    'should.*be.*consumable.*from.*pods.*in.*volume.*with.*mappings'
-    'should.*be.*restarted.*with.*a.*healthz.*http.*liveness.*probe'
-    'should.*call.*prestop.*when.*killing.*a.*pod'
-    'should.*create.*a.*ResourceQuota.*and.*capture.*the.*life.*of.*a.*secret'
-    'should.*create.*and.*stop.*a.*working.*application'
-    'should.*create.*endpoints.*for.*unready.*pods'
-    'should.*enable.*privileged.*commands'
-    'should.*function.*for.*nod\-pod.*communication.*http'
-    'should.*handle.*in.*cluster.*config'
-    'should.*not.*deadlock.*when.*a.*pod.s.*predecessor.*fails'
-    'should.*not.*start.*app.*containers.*if.*init.*containers.*fail.*on.*a.*RestartAlways.*pod'
-    'should.*provide.*DNS.*for.*ExternalName.*services'
-    'should.*provide.*DNS.*for.*pods.*for.*Hostname.*and.*Subdomain.*Annotation'
-    'should.*provide.*DNS.*for.*services'
-    'should.*provide.*DNS.*for.*the.*cluster'
-    'should.*provide.*basic.*identity'
-    'should.*provide.*container.*s.*cpu.*limit'
-    'should.*serve.*a.*basic.*endpoint.*from.*pods'
-    'should.*set.*mode.*on.*item.*file'
-    'should.*support.*exec.*through.*an.*HTTP.*proxy'
-    'should.*support.*non-root.*0666.*default'
-    'should.*support.*remote.*command.*execution.*over.*websockets'
-    'should.*update.*labels.*on.*modification'
- )
+)
+
+TESTS_LIST=(
+    'ConfigMap [AfterEach] updates should be reflected in volume [Conformance] [Volume]'
+    'Deployment [AfterEach] deployment should support rollover'
+    'Deployment [It] deployment should support rollover'
+    'Deployment [It] lack of progress should be reported in the deployment status'
+    'DisruptionController [It] evictions: enough pods, absolute => should allow an eviction'
+    'DisruptionController [It] evictions: enough pods, replicaSet, percentage => should allow an eviction'
+    'Downward API volume [AfterEach] should set DefaultMode on files [Conformance] [Volume]'
+    'Downward API volume [It] should provide container cpu request [Conformance] [Volume]'
+    'EmptyDir volumes [AfterEach] should support (root,0666,default) [Conformance] [Volume]'
+    'EmptyDir volumes [AfterEach] should support (root,0666,tmpfs) [Conformance] [Volume]'
+    'EmptyDir volumes [BeforeEach] should support (root,0644,default) [Conformance] [Volume]'
+    'Garbage collector [It] should orphan pods created by rc if deleteOptions.OrphanDependents is nil'
+    'HostPath [AfterEach] should support subPath [Volume]'
+    'Kubectl client [AfterEach] [k8s.io] Kubectl run rc should create an rc from an image [Conformance]'
+    'Kubectl client [k8s.io] Kubectl expose [It] should create services for rc [Conformance]'
+    'Kubectl client [k8s.io] Kubectl label [BeforeEach] should update the label on a resource [Conformance]'
+    'Kubectl client [k8s.io] Simple pod [BeforeEach] should support port-forward'
+    'Kubectl client [k8s.io] Simple pod [It] should return command exit codes'
+    'Kubectl client [k8s.io] Update Demo [It] should create and stop a replication controller [Conformance]'
+    'Kubectl client [k8s.io] Update Demo [It] should do a rolling update of a replication controller [Conformance]'
+    'KubeletManagedEtcHosts [It] should test kubelet managed /etc/hosts file [Conformance]'
+    'LimitRange [AfterEach] should create a LimitRange with defaults and ensure pod has those defaults applied.'
+    'Networking [BeforeEach] [k8s.io] Granular Checks: Pods should function for intra-pod communication: udp [Conformance]'
+    'Networking [k8s.io] Granular Checks: Pods [It] should function for intra-pod communication: http [Conformance]'
+    'Pods Extended [AfterEach] [k8s.io] Pods Set QOS Class should be submitted and removed [Conformance]'
+    'Pods [AfterEach] should get a host IP [Conformance]'
+    'Pods [AfterEach] should support retrieving logs from the container over websockets'
+    'Pods [It] should allow activeDeadlineSeconds to be updated [Conformance]'
+    'Pods [It] should be updated [Conformance]'
+    'Port forwarding [k8s.io] With a server listening on 0.0.0.0 [It] should support forwarding over websockets'
+    'Port forwarding [k8s.io] With a server listening on 0.0.0.0 [k8s.io] that expects a client request [It] should support a client that connects, sends data, and disconnects'
+    'Port forwarding [k8s.io] With a server listening on localhost [k8s.io] that expects a client request [It] should support a client that connects, sends data, and disconnects [Conformance]'
+    'Probing container [It] should be restarted with a exec "cat /tmp/health" liveness probe [Conformance]'
+    'Projected [AfterEach] should be consumable in multiple volumes in the same pod [Conformance] [Volume]'
+    'Projected [It] updates should be reflected in volume [Conformance] [Volume]'
+    'Proxy version v1 [AfterEach] should proxy logs on node with explicit kubelet port [Conformance]'
+    'ReplicationController [It] should adopt matching pods on creation'
+    'ReplicationController [It] should serve a basic image on each replica with a public image [Conformance]'
+    'ResourceQuota [AfterEach] should create a ResourceQuota and ensure its status is promptly calculated.'
+    'ResourceQuota [It] should create a ResourceQuota and capture the life of a configMap.'
+    'Secrets [It] should be consumable from pods in volume [Conformance] [Volume]'
+    'Secrets [It] should be consumable from pods in volume as non-root with defaultMode and fsGroup set [Conformance] [Volume]'
+    'ServiceAccounts [It] should mount an API token into pods [Conformance]'
+    'Services [It] should be able to create a functioning NodePort service'
+    'StatefulSet [k8s.io] Basic StatefulSet functionality [StatefulSetBasic] [It] Scaling should happen in predictable order and halt if any stateful pod is unhealthy'
+)
+
+function escape_test_name() {
+    sed 's/\[[^]]*\]//g' <<< "$1" | sed "s/[^[:alnum:]]/ /g" | tr -s " " | sed "s/^\s\+//" | sed "s/\s/.*/g"
+}
 
 function test_names () {
     local first=y
-    for name in "${TESTS_LIST[@]}"; do
+    for name in "${TESTS_LIST_REGEX[@]}"; do
         if [ -z "${first}" ]; then
             echo -n "|"
         else
             first=
         fi
         echo -n "${name}"
+    done
+    for name in "${TESTS_LIST[@]}"; do
+        if [ -z "${first}" ]; then
+            echo -n "|"
+        else
+            first=
+        fi
+        echo -n "$(escape_test_name "${name}")"
     done
 }
 
