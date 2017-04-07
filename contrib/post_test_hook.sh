@@ -17,35 +17,77 @@
 BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
-TESTS_TO_SKIP=(
+TESTS_LIST=(
     '\[Slow\]'
     '\[Serial\]'
     '\[Disruptive\]'
     '\[Flaky\]'
     '\[Feature:.+\]'
     '\[HPA\]'
+    'Basic.*StatefulSet.*functionality.*should.*allow.*template.*updates'
     'Dashboard'
+    'Granular.*Checks.*Pods.*should.*function.*for.*node\-pod.*communication:.*udp'
+    'Guestbook.*application.*should.*create.*and.*stop.*a.*working.*application'
+    'Kubectl.*run.*rc.*should.*create.*an.*rc.*from.*an.*image'
     'NFS.*should.*be.*mountable'
+    'Pods.*Set.*QOS.*Class.*should.*be.*submitted.*and.*removed'
+    'RecreateDeployment.*should.*delete.*old.*pods.*and.*create.*new.*ones'
+    'Simple.*pod.*should.*handle.*in\-cluster.*config'
+    'Simple.*pod.*should.*support.*exec.*through.*an.*HTTP.*proxy'
+    'With.*a.*server.*listening.*on.*localhost.*that.*expects.*no.*client.*request.*should.*support.*a.*client.*that.*connects.*sends.*data.*and.*disconnects'
+    'deployment.*should.*support.*rollover'
+    'evictions.*enough.*pods.*absolute.*should.*allow.*an.*eviction'
+    'evictions.*enough.*pods.*replicaSet.*percentage.*should.*allow.*an.*eviction'
+    'evictions:.*too.*few.*pods,.*absolute.*should.*not.*allow.*an.*eviction'
+    'optional.*updates.*should.*be.*reflected.*in.*volume'
+    'paused.*deployment.*should.*be.*ignored.*by.*the.*controller'
     'provide.*basic.*identity'
     'should.*adopt.*matching.*orphans.*and.*release.*non.*matching.*pods'
     'should.*allow.*template.*updates'
+    'should.*be.*able.*to.*create.*a.*functioning.*NodePort.*service'
+    'should.*be.*consumable.*from.*pods.*in.*volume.*with.*mappings'
+    'should.*be.*consumable.*in.*multiple.*volumes.*in.*the.*same.*pod'
+    'should.*be.*restarted.*with.*a.*healthz.*http.*liveness.*probe'
     'should.*call.*prestop.*when.*killing.*a.*pod'
+    'should.*create.*a.*LimitRange.*with.*defaults.*and.*ensure.*pod.*has.*those.*defaults.*applied.*'
+    'should.*create.*a.*ResourceQuota.*and.*capture.*the.*life.*of.*a.*configMap.*'
+    'should.*create.*a.*ResourceQuota.*and.*capture.*the.*life.*of.*a.*secret'
+    'should.*create.*a.*ResourceQuota.*and.*ensure.*its.*status.*is.*promptly.*calculated.*'
     'should.*create.*and.*stop.*a.*working.*application'
     'should.*create.*endpoints.*for.*unready.*pods'
+    'should.*enable.*privileged.*commands'
+    'should.*function.*for.*nod\-pod.*communication.*http'
     'should.*handle.*in.*cluster.*config'
     'should.*not.*deadlock.*when.*a.*pod.s.*predecessor.*fails'
+    'should.*not.*start.*app.*containers.*if.*init.*containers.*fail.*on.*a.*RestartAlways.*pod'
+    'should.*orphan.*pods.*created.*by.*rc.*if.*deleteOptions.*OrphanDependents.*is.*nil'
     'should.*provide.*DNS.*for.*ExternalName.*services'
     'should.*provide.*DNS.*for.*pods.*for.*Hostname.*and.*Subdomain.*Annotation'
     'should.*provide.*DNS.*for.*services'
     'should.*provide.*DNS.*for.*the.*cluster'
+    'should.*provide.*basic.*identity'
+    'should.*provide.*container.*s.*cpu.*limit'
+    'should.*proxy.*logs.*on.*node.*with.*explicit.*kubelet.*port'
+    'should.*return.*command.*exit.*codes'
     'should.*serve.*a.*basic.*endpoint.*from.*pods'
+    'should.*serve.*a.*basic.*image.*on.*each.*replica.*with.*a.*public.*image'
+    'should.*set.*DefaultMode.*on.*files'
+    'should.*set.*mode.*on.*item.*file'
+    'should.*support.*a.*client.*that.*connects.*sends.*data.*and.*disconnects'
     'should.*support.*exec.*through.*an.*HTTP.*proxy'
+    'should.*support.*non-root.*0666.*default'
+    'should.*support.*remote.*command.*execution.*over.*websockets'
+    'should.*support.*retrieving.*logs.*from.*the.*container.*over.*websockets'
+    'should.*support.*root.*0666.*default.*'
+    'should.*support.*subPath'
     'should.*update.*labels.*on.*modification'
+    'should.*update.*the.*label.*on.*a.*resource'
+    'updates.*should.*be.*reflected.*in.*volume'
 )
 
-function skipped_test_names () {
+function test_names () {
     local first=y
-    for name in "${TESTS_TO_SKIP[@]}"; do
+    for name in "${TESTS_LIST[@]}"; do
         if [ -z "${first}" ]; then
             echo -n "|"
         else
@@ -128,5 +170,5 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 source $DEST/.gimme/envs/go1.7.5.env
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(skipped_test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.skip=$(test_names)"
 popd >/dev/null
