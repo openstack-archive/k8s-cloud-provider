@@ -136,10 +136,12 @@ imports:
 - name: github.com/google/gofuzz
   version: 44d81051d367757e1c7c6a5a86423ece9afcf63c
 - name: github.com/gophercloud/gophercloud
-  version: 12f19e5e04d617182cffa5c11f189ef0013b9791
+  version: b06120d13e262ceaf890ef38ee30898813696af0
   subpackages:
   - openstack
+  - openstack/blockstorage/v1/apiversions
   - openstack/blockstorage/v1/volumes
+  - openstack/blockstorage/v2/volumes
   - openstack/common/extensions
   - openstack/compute/v2/extensions/volumeattach
   - openstack/compute/v2/flavors
