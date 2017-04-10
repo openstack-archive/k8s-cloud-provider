@@ -90,7 +90,7 @@ function install_k8s_cloud_provider {
     sudo touch $LOG_DIR/kube-scheduler.log;sudo ln -s $LOG_DIR/kube-scheduler.log $LOG_DIR/screen-kube-scheduler.log
     sudo touch $LOG_DIR/kubelet.log;sudo ln -s $LOG_DIR/kubelet.log $LOG_DIR/screen-kubelet.log
 
-    # Turn on a few things in local-up-cluster.sh
+    # Turn on/off a few things in local-up-cluster.sh
     export ALLOW_PRIVILEGED=true
     export ALLOW_SECURITY_CONTEXT=true
     export ALLOW_ANY_TOKEN=true
@@ -99,6 +99,8 @@ function install_k8s_cloud_provider {
     export FIRST_SERVICE_CLUSTER_IP=10.1.0.1
     export API_HOST_IP=${HOST_IP:-"127.0.0.1"}
     export KUBELET_HOST=${HOST_IP:-"127.0.0.1"}
+    #export HOSTNAME_OVERRIDE=${HOST_IP:-"127.0.0.1"}
+    export ENABLE_CRI=false
 
     run_process kubernetes "sudo -E PATH=$PATH hack/local-up-cluster.sh"
     popd >/dev/null
