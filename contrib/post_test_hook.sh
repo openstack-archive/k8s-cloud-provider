@@ -38,7 +38,6 @@ TESTS_LIST=(
     'PreStop [It] should call prestop when killing a pod [Conformance]'
     'Services [It] should create endpoints for unready pods'
     'Services [It] should preserve source pod IP for traffic thru service cluster IP'
-    'Volumes [Volume] [k8s.io] NFS [It] should be mountable'
 )
 
 function escape_test_name() {
