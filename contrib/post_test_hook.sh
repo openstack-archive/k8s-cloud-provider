@@ -27,7 +27,6 @@ TESTS_LIST_REGEX=(
 )
 
 TESTS_LIST=(
-    'ConfigMap [It] updates should be reflected in volume [Conformance] [Volume]'
     'DNS [It] should provide DNS for ExternalName services'
     'DNS [It] should provide DNS for pods for Hostname and Subdomain Annotation'
     'DNS [It] should provide DNS for services [Conformance]'
@@ -41,7 +40,6 @@ TESTS_LIST=(
     'Projected [It] should update labels on modification [Conformance] [Volume]'
     'Services [It] should create endpoints for unready pods'
     'Services [It] should preserve source pod IP for traffic thru service cluster IP'
-    'Volumes [Volume] [k8s.io] NFS [It] should be mountable'
 )
 
 function escape_test_name() {
