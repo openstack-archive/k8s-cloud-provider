@@ -85,7 +85,7 @@ sudo chmod 755 kubectl
 echo "Waiting for kubernetes service to start..."
 for i in {1..600}
 do
-    running_count=$(./kubectl -s=http://127.0.0.1:8080 get svc --no-headers 2>/dev/null | grep "443" | wc -l)
+    running_count=$(./kubectl -s=https://127.0.0.1:6443 get svc --no-headers 2>/dev/null | grep "443" | wc -l)
     if [ "$running_count" -ge 1 ]; then
       break
     fi
@@ -97,28 +97,28 @@ echo "Cluster created!"
 echo ""
 
 echo "Dump Kubernetes Objects..."
-./kubectl -s=http://127.0.0.1:8080 get componentstatuses
-./kubectl -s=http://127.0.0.1:8080 get configmaps
-./kubectl -s=http://127.0.0.1:8080 get daemonsets
-./kubectl -s=http://127.0.0.1:8080 get deployments
-./kubectl -s=http://127.0.0.1:8080 get events
-./kubectl -s=http://127.0.0.1:8080 get endpoints
-./kubectl -s=http://127.0.0.1:8080 get horizontalpodautoscalers
-./kubectl -s=http://127.0.0.1:8080 get ingress
-./kubectl -s=http://127.0.0.1:8080 get jobs
-./kubectl -s=http://127.0.0.1:8080 get limitranges
-./kubectl -s=http://127.0.0.1:8080 get nodes
-./kubectl -s=http://127.0.0.1:8080 get namespaces
-./kubectl -s=http://127.0.0.1:8080 get pods
-./kubectl -s=http://127.0.0.1:8080 get persistentvolumes
-./kubectl -s=http://127.0.0.1:8080 get persistentvolumeclaims
-./kubectl -s=http://127.0.0.1:8080 get quota
-./kubectl -s=http://127.0.0.1:8080 get resourcequotas
-./kubectl -s=http://127.0.0.1:8080 get replicasets
-./kubectl -s=http://127.0.0.1:8080 get replicationcontrollers
-./kubectl -s=http://127.0.0.1:8080 get secrets
-./kubectl -s=http://127.0.0.1:8080 get serviceaccounts
-./kubectl -s=http://127.0.0.1:8080 get services
+./kubectl -s=https://127.0.0.1:6443 get componentstatuses
+./kubectl -s=https://127.0.0.1:6443 get configmaps
+./kubectl -s=https://127.0.0.1:6443 get daemonsets
+./kubectl -s=https://127.0.0.1:6443 get deployments
+./kubectl -s=https://127.0.0.1:6443 get events
+./kubectl -s=https://127.0.0.1:6443 get endpoints
+./kubectl -s=https://127.0.0.1:6443 get horizontalpodautoscalers
+./kubectl -s=https://127.0.0.1:6443 get ingress
+./kubectl -s=https://127.0.0.1:6443 get jobs
+./kubectl -s=https://127.0.0.1:6443 get limitranges
+./kubectl -s=https://127.0.0.1:6443 get nodes
+./kubectl -s=https://127.0.0.1:6443 get namespaces
+./kubectl -s=https://127.0.0.1:6443 get pods
+./kubectl -s=https://127.0.0.1:6443 get persistentvolumes
+./kubectl -s=https://127.0.0.1:6443 get persistentvolumeclaims
+./kubectl -s=https://127.0.0.1:6443 get quota
+./kubectl -s=https://127.0.0.1:6443 get resourcequotas
+./kubectl -s=https://127.0.0.1:6443 get replicasets
+./kubectl -s=https://127.0.0.1:6443 get replicationcontrollers
+./kubectl -s=https://127.0.0.1:6443 get secrets
+./kubectl -s=https://127.0.0.1:6443 get serviceaccounts
+./kubectl -s=https://127.0.0.1:6443 get services
 
 
 echo "Running tests..."
