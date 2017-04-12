@@ -75,9 +75,9 @@ function install_k8s_cloud_provider {
     if [ ! -d "${K8S_SRC}" ]; then
         git clone https://${CONFORMANCE_REPO} ${K8S_SRC}
         pushd ${K8S_SRC} >/dev/null
-        git remote update
-        git fetch --all --tags --prune
-        git checkout tags/v1.7.0-alpha.1
+        #git remote update
+        #git fetch --all --tags --prune
+        #git checkout tags/v1.7.0-alpha.1
         popd >/dev/null
     fi
 
