@@ -15,4 +15,5 @@
 set -ex
 
 echo "In gate_test_hook"
+sudo sed -i 's/USE_SCREEN=False/USE_SCREEN=True/' /opt/stack/new/devstack/local.conf
 $BASE/new/devstack-gate/devstack-vm-gate.sh
