@@ -38,7 +38,13 @@ function install_docker {
         sudo apt-get update
         sudo apt-cache policy docker-engine
         sudo apt-get install -y docker-engine=1.12.6-0~ubuntu-xenial
+        sudo systemctl stop docker
+        sudo sh -c 'echo DOCKER_OPTS=\"--dns 8.8.8.8 --dns 8.8.4.4 --bip=10.1.0.1/24 --fixed-cidr=10.1.0.0/24\" >> /etc/default/docker'
+        sudo cat /etc/default/docker
+        sudo systemctl start docker
         sudo systemctl status docker
+        sudo ifconfig -a
+        sudo ifconfig docker0
     fi
     docker --version
 
@@ -97,13 +103,14 @@ function install_k8s_cloud_provider {
 
     # Turn on/off a few things in local-up-cluster.sh
     export ALLOW_PRIVILEGED=true
-    export KUBE_ENABLE_CLUSTER_DNS=false
+    export KUBE_ENABLE_CLUSTER_DNS=true
+    export SERVICE_CLUSTER_IP_RANGE="10.1.0.0/24"
+    export FIRST_SERVICE_CLUSTER_IP="10.1.0.1"
+    export KUBE_DNS_SERVER_IP="10.1.0.10"
     export KUBE_ENABLE_CLUSTER_DASHBOARD=true
     export ALLOW_SECURITY_CONTEXT=true
     export ALLOW_ANY_TOKEN=true
     export ENABLE_HOSTPATH_PROVISIONER=true
-    export SERVICE_CLUSTER_IP_RANGE=10.1.0.0/24
-    export FIRST_SERVICE_CLUSTER_IP=10.1.0.1
     export API_HOST_IP=${HOST_IP:-"127.0.0.1"}
     export KUBELET_HOST="0.0.0.0"
     #export HOSTNAME_OVERRIDE=${HOST_IP:-"127.0.0.1"}
