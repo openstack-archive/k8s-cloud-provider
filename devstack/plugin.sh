@@ -128,6 +128,7 @@ function install_k8s_cloud_provider {
     sudo iptables -P INPUT ACCEPT
     sudo iptables -P FORWARD ACCEPT
     sudo iptables -P OUTPUT ACCEPT
+    sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
     run_process kubernetes "sudo -E PATH=$PATH hack/local-up-cluster.sh"
     popd >/dev/null
