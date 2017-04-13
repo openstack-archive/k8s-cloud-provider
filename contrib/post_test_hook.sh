@@ -18,12 +18,6 @@ BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
 TESTS_LIST_REGEX=(
-    '\[Slow\]'
-    '\[Serial\]'
-    '\[Disruptive\]'
-    '\[Flaky\]'
-    '\[Feature:.+\]'
-    '\[HPA\]'
 )
 
 TESTS_LIST=(
@@ -156,6 +150,25 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 sudo iptables -t nat -A POSTROUTING -o ens3 -s 10.0.0.0/24 -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o ens3 -s 172.17.0.0/24 -j MASQUERADE
 
+sudo ifconfig -a
+
+sudo hostname
+sudo hostname -i
+sudo cat /etc/hosts
+
+export HOSTNAME=$(hostname)
+export HOSTIP=$(ip addr show dev ens3 | sed -nr 's/.*inet ([^ \/]+).*/\1/p')
+echo "$HOSTIP $HOSTNAME" | sudo cat - /etc/hosts | sudo tee /etc/hosts >/dev/null
+
+sudo cat /etc/hosts
+sudo hostname
+sudo hostname -i
+sudo cat /etc/hosts
+
+sudo pip install git-pr
+sudo git remote update
+sudo git pr origin 45142
+
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.skip=$(test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.focus=$(test_names)"
 popd >/dev/null
