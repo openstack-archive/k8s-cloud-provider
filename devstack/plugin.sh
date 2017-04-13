@@ -77,7 +77,14 @@ function install_k8s_cloud_provider {
         pushd ${K8S_SRC} >/dev/null
         git remote update
         git fetch --all --tags --prune
-        #git checkout tags/v1.7.0-alpha.1
+
+        # Pull pending reviews in kubernetes/kubernetes
+        sudo pip install git-pr
+        sudo git remote update
+        sudo git pr origin 45161;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cp $head;
+        sudo git pr origin 45203;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cp $head;
+        sudo git pr origin 45230;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cp $head;
+
         popd >/dev/null
     fi
 
@@ -105,12 +112,12 @@ function install_k8s_cloud_provider {
     export API_HOST_IP="172.17.0.1"
     export KUBELET_HOST="0.0.0.0"
     export ENABLE_CRI=false
+    export HOSTNAME_OVERRIDE=$(ip route get 1.1.1.1 | awk '{print $7}')
+    export LOG_LEVEL=10
 
-#    echo "Stop Docker iptable rules that interfere with kubedns"
-#    sudo iptables -D FORWARD -j DOCKER-ISOLATION
-#    sudo iptables -A DOCKER-ISOLATION -j RETURN
-#    sudo iptables --flush DOCKER-ISOLATION
-#    sudo iptables -X DOCKER-ISOLATION
+    # Need PR 45230 above
+    export ENABLE_SINGLE_CA_SIGNER=true
+
     echo "Stopping firewall and allowing everything..."
     sudo iptables -F
     sudo iptables -X
