@@ -51,6 +51,8 @@ function install_docker {
     sudo systemctl start docker.service --ignore-dependencies
     echo "Checking docker service"
     sudo docker ps
+    sudo ifconfig docker0
+    sudo cat /etc/default/docker
 }
 
 function install_k8s_cloud_provider {
@@ -97,13 +99,14 @@ function install_k8s_cloud_provider {
 
     # Turn on/off a few things in local-up-cluster.sh
     export ALLOW_PRIVILEGED=true
-    export KUBE_ENABLE_CLUSTER_DNS=false
+    export KUBE_ENABLE_CLUSTER_DNS=true
+    export SERVICE_CLUSTER_IP_RANGE="172.17.0.0/24"
+    export FIRST_SERVICE_CLUSTER_IP="172.17.0.2"
+    export KUBE_DNS_SERVER_IP="172.17.0.10"
     export KUBE_ENABLE_CLUSTER_DASHBOARD=true
     export ALLOW_SECURITY_CONTEXT=true
     export ALLOW_ANY_TOKEN=true
     export ENABLE_HOSTPATH_PROVISIONER=true
-    export SERVICE_CLUSTER_IP_RANGE=10.1.0.0/24
-    export FIRST_SERVICE_CLUSTER_IP=10.1.0.1
     export API_HOST_IP=${HOST_IP:-"127.0.0.1"}
     export KUBELET_HOST="0.0.0.0"
     #export HOSTNAME_OVERRIDE=${HOST_IP:-"127.0.0.1"}
