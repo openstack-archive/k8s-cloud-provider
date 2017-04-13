@@ -78,6 +78,15 @@ function install_k8s_cloud_provider {
         git remote update
         git fetch --all --tags --prune
 
+        # Pull pending reviews in kubernetes/kubernetes
+        sudo pip install git-pr
+        sudo git remote update
+        sudo git config --global user.email "you@example.com"
+        sudo git config --global user.name "Your Name"
+        sudo git pr origin 45161;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cherry-pick $head || true;
+        sudo git pr origin 45203;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cherry-pick $head || true;
+        sudo git pr origin 45230;head=$(sudo git rev-parse HEAD);sudo git checkout master;sudo git cherry-pick $head || true;
+
         popd >/dev/null
     fi
 
@@ -107,6 +116,9 @@ function install_k8s_cloud_provider {
     export ENABLE_CRI=false
     export HOSTNAME_OVERRIDE=$(ip route get 1.1.1.1 | awk '{print $7}')
     export LOG_LEVEL=10
+
+    # Need PR 45230 above
+    export ENABLE_SINGLE_CA_SIGNER=true
 
     echo "Stopping firewall and allowing everything..."
     sudo iptables -F
