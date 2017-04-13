@@ -77,7 +77,12 @@ function install_k8s_cloud_provider {
         pushd ${K8S_SRC} >/dev/null
         git remote update
         git fetch --all --tags --prune
-        #git checkout tags/v1.7.0-alpha.1
+
+        # Pending review in kubernetes/kubernetes - https://github.com/kubernetes/kubernetes/pull/45161
+        sudo pip install git-pr
+        sudo git remote update
+        sudo git pr origin 45161
+
         popd >/dev/null
     fi
 

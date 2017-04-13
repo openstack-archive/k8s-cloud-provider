@@ -18,12 +18,6 @@ BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
 TESTS_LIST_REGEX=(
-    '\[Slow\]'
-    '\[Serial\]'
-    '\[Disruptive\]'
-    '\[Flaky\]'
-    '\[Feature:.+\]'
-    '\[HPA\]'
 )
 
 FLAKY_TESTS_LIST=(
@@ -90,7 +84,7 @@ echo "Waiting for kubernetes service to start..."
 for i in {1..600}
 do
     if [[ -f $KUBECONFIG ]]; then
-        running_count=$(./kubectl get svc --no-headers 2>/dev/null | grep "kubernetes" | wc -l)
+        running_count=$(./kubectl get nodes --no-headers 2>/dev/null | grep "Ready" | wc -l)
         if [ "$running_count" -ge 1 ]; then
             break
         fi
@@ -156,12 +150,19 @@ pushd $GOPATH/src/k8s.io/kubernetes >/dev/null
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=cmd/kubectl
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkgo
 
+# open up access for containers
 sudo ifconfig -a
 sudo iptables -t nat -A POSTROUTING -o ens3 -s 10.0.0.0/24 -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o ens3 -s 172.17.0.0/24 -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o eth0 -s 10.0.0.0/24 -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o eth0 -s 172.17.0.0/24 -j MASQUERADE
 
+# Pending review(s) in kubernetes/kubernetes
+sudo pip install git-pr
+sudo git remote update
+sudo git pr origin 45142
+sudo git pr origin 45165
+
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --provider=local --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.skip=$(test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --provider=local --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.focus=$(test_names)"
 popd >/dev/null
