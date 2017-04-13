@@ -97,7 +97,10 @@ function install_k8s_cloud_provider {
 
     # Turn on/off a few things in local-up-cluster.sh
     export ALLOW_PRIVILEGED=true
-    export KUBE_ENABLE_CLUSTER_DNS=false
+    export KUBE_ENABLE_CLUSTER_DNS=true
+    export SERVICE_CLUSTER_IP_RANGE="10.1.0.0/24"
+    export FIRST_SERVICE_CLUSTER_IP="10.1.0.1"
+    export KUBE_DNS_SERVER_IP="10.1.0.10"
     export KUBE_ENABLE_CLUSTER_DASHBOARD=true
     export ALLOW_SECURITY_CONTEXT=true
     export ALLOW_ANY_TOKEN=true
