@@ -18,12 +18,6 @@ BASE_DIR=$(cd $(dirname $BASH_SOURCE)/.. && pwd)
 
 
 TESTS_LIST_REGEX=(
-    '\[Slow\]'
-    '\[Serial\]'
-    '\[Disruptive\]'
-    '\[Flaky\]'
-    '\[Feature:.+\]'
-    '\[HPA\]'
 )
 
 FLAKY_TESTS_LIST=(
@@ -123,6 +117,8 @@ echo "Dump Kubernetes Objects..."
 ./kubectl get serviceaccounts
 ./kubectl get services
 
+./kubectl get nodes -o json
+
 echo "Create a default StorageClass since we do not have a cloud provider"
 ./kubectl create -f - <<EOF || true
 kind: StorageClass
@@ -160,5 +156,5 @@ sudo iptables -t nat -A POSTROUTING -o $HOST_INTERFACE -s 10.0.0.0/24 -j MASQUER
 sudo iptables -t nat -A POSTROUTING -o $HOST_INTERFACE -s 172.17.0.0/24 -j MASQUERADE
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
-sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --provider=local --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.skip=$(test_names)"
+sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --provider=local --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.focus=$(test_names)"
 popd >/dev/null
