@@ -1,0 +1,9 @@
+Code-Review+1: yangjidong <yangjd@inspur.com>
+Code-Review+2: Davanum Srinivas (dims) <davanum@gmail.com>
+Workflow+1: Davanum Srinivas (dims) <davanum@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sat, 22 Apr 2017 02:08:03 +0000
+Reviewed-on: https://review.openstack.org/456161
+Project: openstack/k8s-cloud-provider
+Branch: refs/heads/master
