@@ -36,6 +36,7 @@ TESTS_LIST=(
     'Kubectl client [k8s.io] Simple pod [It] should handle in-cluster config'
     'Kubectl client [k8s.io] Simple pod [It] should support exec through an HTTP proxy'
     'Kubernetes Dashboard [It] should check that the kubernetes-dashboard instance is alive'
+    'Networking [It] should provide Internet connection for containers [Conformance]'
     'PersistentVolumes [Volume] [k8s.io] PersistentVolumes:NFS with Single PV - PVC pairs [It] create a PV and a pre-bound PVC: test write access'
     'PersistentVolumes [Volume] [k8s.io] PersistentVolumes:NFS with Single PV - PVC pairs [It] should create a non-pre-bound PV and PVC: test write access'
     'PersistentVolumes [Volume] [k8s.io] PersistentVolumes:NFS with multiple PVs and PVCs all in same ns [It] should create 4 PVs and 2 PVCs: test write access'
