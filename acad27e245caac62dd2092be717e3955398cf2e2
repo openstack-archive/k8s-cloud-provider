@@ -1,0 +1,8 @@
+Code-Review+2: Davanum Srinivas (dims) <davanum@gmail.com>
+Workflow+1: Davanum Srinivas (dims) <davanum@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 26 Apr 2017 19:52:18 +0000
+Reviewed-on: https://review.openstack.org/460275
+Project: openstack/k8s-cloud-provider
+Branch: refs/heads/master
