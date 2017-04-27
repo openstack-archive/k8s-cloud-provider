@@ -147,6 +147,10 @@ sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=vendor/github.com/onsi/ginkgo/ginkg
 # e2e test does not work with 1.8, so fall back to 1.7
 source $DEST/.gimme/envs/go1.7.5.env
 
+# open up access for containers
+sudo iptables -t nat -A POSTROUTING -o ens3 -s 10.0.0.0/24 -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o ens3 -s 172.17.0.0/24 -j MASQUERADE
+
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
 sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.skip=$(test_names)"
 popd >/dev/null
