@@ -33,7 +33,8 @@ function install_prereqs {
 function install_docker {
     # Install docker if needed
     if ! is_package_installed docker-engine; then
-        sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+        sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D || true
+        sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D || true
         sudo apt-add-repository 'deb http://apt.dockerproject.org/repo ubuntu-xenial main'
         sudo apt-get update
         sudo apt-cache policy docker-engine
@@ -95,6 +96,7 @@ function install_k8s_cloud_provider {
     sudo touch $LOG_DIR/kubelet.log;sudo ln -s $LOG_DIR/kubelet.log $LOG_DIR/screen-kubelet.log
 
     # Turn on/off a few things in local-up-cluster.sh
+    export CLOUD_PROVIDER=local
     export ALLOW_PRIVILEGED=true
     export KUBE_ENABLE_CLUSTER_DNS=true
     export KUBE_ENABLE_CLUSTER_DASHBOARD=true
