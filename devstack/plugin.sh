@@ -95,6 +95,7 @@ function install_k8s_cloud_provider {
     sudo touch $LOG_DIR/kubelet.log;sudo ln -s $LOG_DIR/kubelet.log $LOG_DIR/screen-kubelet.log
 
     # Turn on/off a few things in local-up-cluster.sh
+    export CLOUD_PROVIDER=local
     export ALLOW_PRIVILEGED=true
     export KUBE_ENABLE_CLUSTER_DNS=true
     export KUBE_ENABLE_CLUSTER_DASHBOARD=true
