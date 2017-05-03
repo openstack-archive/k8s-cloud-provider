@@ -120,7 +120,8 @@ function install_k8s_cloud_provider {
     sudo iptables -P FORWARD ACCEPT
     sudo iptables -P OUTPUT ACCEPT
 
-    run_process kubernetes "sudo -E PATH=$PATH hack/local-up-cluster.sh"
+    COMMAND='sudo -E PATH='$PATH' "cd '$K8S_SRC'; ./hack/local-up-cluster.sh"'
+    run_process kubernetes '$COMMAND'
     popd >/dev/null
 }
 
