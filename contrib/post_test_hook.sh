@@ -27,16 +27,12 @@ TESTS_LIST_REGEX=(
 )
 
 FLAKY_TESTS_LIST=(
-    'Downward API volume [It] should update annotations on modification [Conformance] [Volume]'
+    # https://github.com/kubernetes/kubernetes/issues/44226
     'Downward API volume [It] should update labels on modification [Conformance] [Volume]'
-    'Services [It] should serve multiport endpoints from pods [Conformance]'
 )
 
 FAILING_TESTS_LIST=(
-    'Certificates API [It] should support building a client with a CSR'
-    'DNS [It] should provide DNS for the cluster [Conformance]'
-    'SSH [It] should SSH to all nodes and run commands'
-    'Services [It] should be able to up and down services'
+    # https://github.com/kubernetes/kubernetes/pull/45203
     'Services [It] should create endpoints for unready pods'
 )
 
@@ -152,6 +148,7 @@ export KUBERNETES_CONFORMANCE_TEST=y
 export GINKGO_PARALLEL=y
 export GINKGO_NO_COLOR=y
 export KUBE_MASTER_IP=https://127.0.0.1:6443/
+export ENABLE_SINGLE_CA_SIGNER=true
 
 pushd $GOPATH/src/k8s.io/kubernetes >/dev/null
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=cmd/kubectl
