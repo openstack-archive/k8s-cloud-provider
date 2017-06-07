@@ -33,8 +33,8 @@ FLAKY_TESTS_LIST=(
 )
 
 FAILING_TESTS_LIST=(
-    # https://github.com/kubernetes/kubernetes/pull/45203
-    'Services [It] should create endpoints for unready pods'
+    'Services [It] should be able to create a functioning NodePort service'
+    'Services [It] should serve multiport endpoints from pods [Conformance]'
 )
 
 function escape_test_name() {
@@ -126,6 +126,11 @@ echo "Dump Kubernetes Objects..."
 ./kubectl get serviceaccounts
 ./kubectl get services
 
+echo "Clear the taint to make sure we can schedule jobs to the master node"
+./kubectl taint nodes --all node.cloudprovider.kubernetes.io/uninitialized-
+
+./kubectl get node -o json
+
 echo "Create a default StorageClass since we do not have a cloud provider"
 ./kubectl create -f - <<EOF || true
 kind: StorageClass
@@ -149,6 +154,7 @@ export KUBE_MASTER=local
 export KUBERNETES_PROVIDER=skeleton
 export KUBERNETES_CONFORMANCE_TEST=y
 export GINKGO_PARALLEL=y
+export GINKGO_PARALLELISM=5
 export GINKGO_NO_COLOR=y
 export KUBE_MASTER_IP=https://127.0.0.1:6443/
 
@@ -161,6 +167,7 @@ sudo ifconfig -a
 export HOST_INTERFACE=$(ip -f inet route | awk '/default/ {print $5}')
 sudo iptables -t nat -A POSTROUTING -o $HOST_INTERFACE -s 10.0.0.0/24 -j MASQUERADE
 sudo iptables -t nat -A POSTROUTING -o $HOST_INTERFACE -s 172.17.0.0/24 -j MASQUERADE
+
 
 sudo -E PATH=$GOPATH/bin:$PATH make all WHAT=test/e2e/e2e.test
 sudo -E PATH=$GOPATH/bin:$PATH go run hack/e2e.go -- -v --test --test_args="--ginkgo.trace=true --ginkgo.seed=1378936983 --logtostderr --v 4 --provider=local --report-dir=/opt/stack/logs/ --ginkgo.v --ginkgo.skip=$(test_names)"
