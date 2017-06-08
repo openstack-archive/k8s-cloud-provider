@@ -128,8 +128,11 @@ echo "Dump Kubernetes Objects..."
 ./kubectl get serviceaccounts
 ./kubectl get services
 
-echo "Clear the taint to make sure we can schedule jobs to the master node"
-./kubectl taint nodes --all node.cloudprovider.kubernetes.io/uninitialized-
+# Until we plug in the external openstack cloud controller, we need to clear the taint
+if [[ "$1" == "external"]]; then
+    echo "Clear the taint to make sure we can schedule jobs to the master node"
+    ./kubectl taint nodes --all node.cloudprovider.kubernetes.io/uninitialized-
+fi
 
 ./kubectl get node -o json
 
