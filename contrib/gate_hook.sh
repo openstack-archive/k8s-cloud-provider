@@ -15,4 +15,12 @@
 set -ex
 
 echo "In gate_test_hook"
+
+# Set the CLOUD_PROVIDER to empty for the "local" suite
+if [[ "$1" == "external" ]]; then
+    export CLOUD_PROVIDER=external
+else
+    export CLOUD_PROVIDER=
+fi
+
 $BASE/new/devstack-gate/devstack-vm-gate.sh
