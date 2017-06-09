@@ -8,7 +8,6 @@ import:
   - openstack/blockstorage/v1/volumes
   - openstack/blockstorage/v2/volumes
   - openstack/compute/v2/extensions/volumeattach
-  - openstack/compute/v2/flavors
   - openstack/compute/v2/servers
   - openstack/identity/v3/extensions/trusts
   - openstack/identity/v3/tokens
@@ -28,13 +27,16 @@ import:
   - openstack/networking/v2/ports
   - pagination
 - package: github.com/mitchellh/mapstructure
+- package: github.com/prometheus/client_golang
+  subpackages:
+  - prometheus
 - package: github.com/spf13/pflag
 - package: gopkg.in/gcfg.v1
 - package: k8s.io/apimachinery
   subpackages:
-  - pkg/api/resource
   - pkg/types
   - pkg/util/net
+  - pkg/util/wait
 - package: k8s.io/apiserver
   subpackages:
   - pkg/server/healthz
@@ -48,10 +50,12 @@ import:
   - cmd/cloud-controller-manager/app
   - cmd/cloud-controller-manager/app/options
   - pkg/api/v1
+  - pkg/api/v1/helper
   - pkg/api/v1/service
   - pkg/client/metrics/prometheus
   - pkg/cloudprovider
   - pkg/cloudprovider/providers
+  - pkg/controller
   - pkg/util/exec
   - pkg/util/mount
   - pkg/version/prometheus
